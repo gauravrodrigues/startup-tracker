@@ -287,7 +287,10 @@ SAMPLE_FAILED = [
         "description": "Mobile-first short-form video streaming platform backed by Hollywood",
         "funding_amount": "$1.75B raised",
         "industry": "Media / Entertainment",
-        "founders": "Jeffrey Katzenberg, Meg Whitman",
+        "founders": [
+            {"name": "Jeffrey Katzenberg"},
+            {"name": "Meg Whitman"}
+        ],
         "location": "Los Angeles",
         "date_added": "2020-12-01",
         "source": "Public Records",
@@ -310,7 +313,7 @@ SAMPLE_FAILED = [
         "description": "Blood testing company that claimed to revolutionize diagnostics",
         "funding_amount": "$700M+ raised",
         "industry": "Healthcare / Biotech",
-        "founders": "Elizabeth Holmes",
+        "founders": [{"name": "Elizabeth Holmes"}],
         "location": "Palo Alto",
         "date_added": "2018-09-05",
         "source": "Public Records",
