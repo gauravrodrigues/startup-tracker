@@ -354,27 +354,50 @@
                 return;
             }
             
-            container.innerHTML = startups.map(startup => `
-                <div class="startup-card">
-                    <div class="startup-header">
-                        <div class="startup-name">${startup.name}</div>
-                        ${startup.funding_amount ? `<div class="funding-badge">${startup.funding_amount}</div>` : ''}
-                    </div>
-                    <div class="startup-description">${startup.description}</div>
-                    <div class="startup-meta">
-                        ${startup.industry ? `<div class="meta-item">🏢 ${startup.industry}</div>` : ''}
-                        ${startup.location ? `<div class="meta-item">📍 ${startup.location}</div>` : ''}
-                        ${startup.founders ? `<div class="meta-item">👤 ${startup.founders}</div>` : ''}
-                        <div class="meta-item">📅 ${startup.date_added}</div>
-                    </div>
-                    <div class="source-tag">Source: ${startup.source}</div>
-                    ${startup.website ? `
-                        <div class="startup-links">
-                            <a href="${startup.website}" target="_blank" class="link-btn">🔗 Visit Website</a>
+            container.innerHTML = startups.map(startup => {
+                // Build founders HTML
+                let foundersHTML = '';
+                if (startup.founders && Array.isArray(startup.founders) && startup.founders.length > 0) {
+                    foundersHTML = `
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 10px;">👥 Founders</div>
+                            ${startup.founders.map(founder => `
+                                <div style="background: #f9fafb; padding: 12px; border-radius: 8px; margin-bottom: 8px;">
+                                    <div style="font-weight: 500; color: #111827; margin-bottom: 4px;">${founder.name}</div>
+                                    ${founder.role ? `<div style="font-size: 0.85rem; color: #6b7280; margin-bottom: 6px;">${founder.role}</div>` : ''}
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        ${founder.email ? `<a href="mailto:${founder.email}" style="font-size: 0.8rem; color: #667eea; text-decoration: none;" title="Email">📧 Email</a>` : ''}
+                                        ${founder.linkedin ? `<a href="${founder.linkedin}" target="_blank" style="font-size: 0.8rem; color: #0077b5; text-decoration: none;" title="LinkedIn">💼 LinkedIn</a>` : ''}
+                                        ${founder.twitter ? `<a href="${founder.twitter}" target="_blank" style="font-size: 0.8rem; color: #1da1f2; text-decoration: none;" title="Twitter">🐦 Twitter</a>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
-                    ` : ''}
-                </div>
-            `).join('');
+                    `;
+                }
+                
+                return `
+                    <div class="startup-card">
+                        <div class="startup-header">
+                            <div class="startup-name">${startup.name}</div>
+                            ${startup.funding_amount ? `<div class="funding-badge">${startup.funding_amount}</div>` : ''}
+                        </div>
+                        <div class="startup-description">${startup.description}</div>
+                        <div class="startup-meta">
+                            ${startup.industry ? `<div class="meta-item">🏢 ${startup.industry}</div>` : ''}
+                            ${startup.location ? `<div class="meta-item">📍 ${startup.location}</div>` : ''}
+                            <div class="meta-item">📅 ${startup.date_added}</div>
+                        </div>
+                        ${foundersHTML}
+                        <div class="source-tag">Source: ${startup.source}</div>
+                        ${startup.website ? `
+                            <div class="startup-links">
+                                <a href="${startup.website}" target="_blank" class="link-btn">🔗 Read More</a>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
         }
 
         async function refreshData() {
