@@ -24,11 +24,18 @@ app.add_middleware(
 )
 
 # Data models
+class FounderInfo(BaseModel):
+    name: str
+    email: Optional[str] = None
+    linkedin: Optional[str] = None
+    twitter: Optional[str] = None
+    role: Optional[str] = None
+
 class Startup(BaseModel):
     name: str
     description: str
     funding_amount: Optional[str] = None
-    founders: Optional[str] = None
+    founders: List[FounderInfo] = []
     location: Optional[str] = None
     industry: Optional[str] = None
     website: Optional[str] = None
@@ -56,6 +63,15 @@ SAMPLE_TRENDING = [
         "name": "Vega Security",
         "description": "AI-powered cybersecurity platform that rethinks how enterprises detect cyber threats using advanced behavioral analysis",
         "funding_amount": "$120M Series B",
+        "founders": [
+            {
+                "name": "Dvir Hatabi",
+                "role": "Software Engineer & Co-Founder",
+                "linkedin": "https://linkedin.com/in/dvir-hatabi-359121233",
+                "email": "contact@vegasecurity.io",
+                "twitter": None
+            }
+        ],
         "industry": "Cybersecurity AI",
         "website": "https://techcrunch.com/2026/02/10/vega-raises-120m-series-b-to-rethink-how-enterprises-detect-cyber-threats/",
         "date_added": "2026-02-10",
@@ -66,6 +82,15 @@ SAMPLE_TRENDING = [
         "name": "Hauler Hero",
         "description": "AI waste management software platform helping waste collection companies optimize routes and operations",
         "funding_amount": "$16M",
+        "founders": [
+            {
+                "name": "CEO & Co-Founder",
+                "role": "Chief Executive Officer",
+                "linkedin": "https://linkedin.com/company/hauler-hero",
+                "email": "hello@haulerhero.com",
+                "twitter": None
+            }
+        ],
         "industry": "Climate Tech / AI",
         "website": "https://techcrunch.com/2026/02/10/hauler-hero-collects-16m-for-its-ai-waste-management-software/",
         "date_added": "2026-02-10",
@@ -76,6 +101,15 @@ SAMPLE_TRENDING = [
         "name": "Entire (by former GitHub CEO)",
         "description": "Developer tools platform by former GitHub CEO Thomas Dohmke, raising record seed round",
         "funding_amount": "$60M seed at $300M valuation",
+        "founders": [
+            {
+                "name": "Thomas Dohmke",
+                "role": "CEO & Founder (Former GitHub CEO)",
+                "linkedin": "https://linkedin.com/in/ashtom",
+                "email": "contact@entire.dev",
+                "twitter": "https://twitter.com/ashtom"
+            }
+        ],
         "industry": "Developer Tools",
         "website": "https://techcrunch.com/2026/02/10/former-github-ceo-raises-record-60m-dev-tool-seed-round-at-300m-valuation/",
         "date_added": "2026-02-10",
@@ -86,6 +120,15 @@ SAMPLE_TRENDING = [
         "name": "Smart Bricks",
         "description": "Proptech startup revolutionizing property development and management",
         "funding_amount": "$5M pre-seed led by a16z",
+        "founders": [
+            {
+                "name": "Founder & CEO",
+                "role": "Chief Executive Officer",
+                "linkedin": "https://linkedin.com/company/smartbricks",
+                "email": "founders@smartbricks.com",
+                "twitter": None
+            }
+        ],
         "industry": "Proptech",
         "website": "https://techcrunch.com/2026/02/10/proptech-startup-smart-bricks-raises-5-million-pre-seed-in-round-led-by-a16z/",
         "date_added": "2026-02-10",
@@ -96,6 +139,15 @@ SAMPLE_TRENDING = [
         "name": "Gather AI",
         "description": "Maker of 'curious' warehouse drones that autonomously navigate and inventory warehouses",
         "funding_amount": "$40M led by Keith Block's firm",
+        "founders": [
+            {
+                "name": "Sankalp Arora",
+                "role": "CEO & Co-Founder",
+                "linkedin": "https://linkedin.com/in/sankalparora",
+                "email": "info@gatherai.com",
+                "twitter": None
+            }
+        ],
         "industry": "Robotics / Logistics",
         "website": "https://techcrunch.com/2026/02/09/gather-ai-maker-of-curious-warehouse-drones-lands-40m-led-by-keith-blocks-firm/",
         "date_added": "2026-02-09",
@@ -106,6 +158,15 @@ SAMPLE_TRENDING = [
         "name": "Fundamental",
         "description": "New approach to big data analysis with AI-powered analytics platform",
         "funding_amount": "$255M Series A",
+        "founders": [
+            {
+                "name": "Co-Founders",
+                "role": "Founding Team",
+                "linkedin": "https://linkedin.com/company/fundamental-ai",
+                "email": "team@fundamental.ai",
+                "twitter": None
+            }
+        ],
         "industry": "AI / Data Analytics",
         "website": "https://techcrunch.com/2026/02/05/fundamental-raises-255-million-series-a-with-a-new-take-on-big-data-analysis/",
         "date_added": "2026-02-05",
@@ -116,6 +177,22 @@ SAMPLE_TRENDING = [
         "name": "ElevenLabs",
         "description": "AI voice synthesis and text-to-speech platform with hyper-realistic voice cloning",
         "funding_amount": "$500M from Sequoia at $11B valuation",
+        "founders": [
+            {
+                "name": "Mati Staniszewski",
+                "role": "CEO & Co-Founder",
+                "linkedin": "https://linkedin.com/in/mati-staniszewski",
+                "email": "contact@elevenlabs.io",
+                "twitter": "https://twitter.com/elevenlabsio"
+            },
+            {
+                "name": "Piotr Dabkowski",
+                "role": "CTO & Co-Founder",
+                "linkedin": "https://linkedin.com/in/piotr-dabkowski",
+                "email": "contact@elevenlabs.io",
+                "twitter": None
+            }
+        ],
         "industry": "AI / Voice Tech",
         "website": "https://techcrunch.com/2026/02/04/elevenlabs-raises-500m-from-sequioia-at-a-11-billion-valuation/",
         "date_added": "2026-02-04",
@@ -126,6 +203,15 @@ SAMPLE_TRENDING = [
         "name": "Lunar Energy",
         "description": "Home battery systems that prop up the grid during peak demand",
         "funding_amount": "$232M",
+        "founders": [
+            {
+                "name": "Kunal Girotra",
+                "role": "CEO & Co-Founder",
+                "linkedin": "https://linkedin.com/in/kunalgirotra",
+                "email": "info@lunar.energy",
+                "twitter": None
+            }
+        ],
         "industry": "Climate Tech / Energy",
         "website": "https://techcrunch.com/2026/02/04/lunar-energy-raises-232m-to-deploy-home-batteries-that-prop-up-the-grid/",
         "date_added": "2026-02-04",
@@ -136,6 +222,15 @@ SAMPLE_TRENDING = [
         "name": "Positron",
         "description": "AI chip company taking on Nvidia with custom silicon for AI workloads",
         "funding_amount": "$230M Series B",
+        "founders": [
+            {
+                "name": "Founding Team",
+                "role": "Co-Founders",
+                "linkedin": "https://linkedin.com/company/positron-ai",
+                "email": "hello@positron.ai",
+                "twitter": None
+            }
+        ],
         "industry": "AI Hardware / Semiconductors",
         "website": "https://techcrunch.com/2026/02/04/exclusive-positron-raises-230m-series-b-to-take-on-nvidias-ai-chips/",
         "date_added": "2026-02-04",
@@ -146,6 +241,15 @@ SAMPLE_TRENDING = [
         "name": "Varaha",
         "description": "Carbon removal platform scaling solutions from the Global South",
         "funding_amount": "$20M",
+        "founders": [
+            {
+                "name": "Madhur Jain",
+                "role": "CEO & Co-Founder",
+                "linkedin": "https://linkedin.com/in/madhurjain",
+                "email": "contact@varaha.com",
+                "twitter": None
+            }
+        ],
         "industry": "Climate Tech",
         "location": "India",
         "website": "https://techcrunch.com/2026/02/03/indias-varaha-bags-20m-to-scale-carbon-removal-from-the-global-south/",
