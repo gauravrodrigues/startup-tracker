@@ -7,6 +7,8 @@ from datetime import datetime
 import httpx
 import re
 import os
+import csv
+import json
 
 app = FastAPI(
     title="Startup Tracker API",
@@ -322,12 +324,71 @@ SAMPLE_FAILED = [
     }
 ]
 
+def load_from_database():
+    """Load data from CSV database"""
+    csv_path = os.getenv('STARTUP_DATABASE_PATH', 'data/founder_contact_database.csv')
+    
+    trending = []
+    failed = []
+    
+    try:
+        if os.path.exists(csv_path):
+            with open(csv_path, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    # Parse founders
+                    founders_list = []
+                    if row.get('founders') and row['founders'] != 'nan':
+                        for founder_name in row['founders'].split(', '):
+                            if founder_name.strip():
+                                founders_list.append({
+                                    "name": founder_name.strip(),
+                                    "email": None,
+                                    "linkedin": None,
+                                    "role": "Founder"
+                                })
+                    
+                    # Create startup object
+                    startup_data = {
+                        "name": row['startup_name'],
+                        "description": row.get('description', '')[:300] or f"Innovative startup in {row.get('industry', 'technology')}",
+                        "funding_amount": row.get('funding_amount', ''),
+                        "founders": founders_list,
+                        "location": row.get('location', ''),
+                        "industry": row.get('industry', ''),
+                        "website": row.get('website', ''),
+                        "date_added": "2026-02-12",
+                        "source": row.get('source', 'topstartups.io'),
+                        "status": "trending"
+                    }
+                    
+                    # Add to trending if has funding
+                    if startup_data['funding_amount']:
+                        trending.append(startup_data)
+                    
+                    # Limit to 20 trending
+                    if len(trending) >= 20:
+                        break
+            
+            print(f"✓ Loaded {len(trending)} startups from database")
+        else:
+            print("⚠ Database not found, using sample data")
+            return [Startup(**s) for s in SAMPLE_TRENDING], [Startup(**s) for s in SAMPLE_FAILED]
+            
+    except Exception as e:
+        print(f"⚠ Error loading database: {e}, using sample data")
+        return [Startup(**s) for s in SAMPLE_TRENDING], [Startup(**s) for s in SAMPLE_FAILED]
+    
+    # Use sample failed startups
+    failed = [s for s in SAMPLE_FAILED]
+    
+    return [Startup(**s) for s in trending], [Startup(**s) for s in failed]
+
 def init_sample_data():
-    """Initialize with sample data"""
+    """Initialize with data from database or fallback to samples"""
     global trending_startups_data, failed_startups_data, last_refresh
     
-    trending_startups_data = [Startup(**s) for s in SAMPLE_TRENDING]
-    failed_startups_data = [Startup(**s) for s in SAMPLE_FAILED]
+    trending_startups_data, failed_startups_data = load_from_database()
     last_refresh = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # Initialize on startup
